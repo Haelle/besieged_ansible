@@ -1,0 +1,54 @@
+---
+- name: create main directory
+  file:
+    path: /var/www/{{ app_name }}
+    state: directory
+    owner: deploy
+    group: deploy
+
+- name: Add pgcrypto extension to the database (for UUID use)
+  postgresql_ext:
+    name: pgcrypto
+    db: "{{ db_name }}"
+    state: present
+  become_user: postgres
+
+- name: Set the master key to decrypt credentials
+  template:
+    src: master.key.j2
+    dest: '/var/www/{{ app_name }}/shared/config/master.key'
+
+- name: Set sidekiq configuration file
+  template:
+    src: sidekiq.yml.j2
+    dest: '/var/www/{{ app_name }}/shared/config/sidekiq.yml'
+
+- name: Template sidekiq service
+  template:
+    src: sidekiq.service.j2
+    dest: '/etc/systemd/system/sidekiq_{{ app_name }}.service'
+    mode: 0644
+  notify:
+    - enable sidekiq service
+
+- name: restart sidekiq service if production env
+  systemd:
+    state: restarted
+    daemon_reload: true
+    name: 'sidekiq_{{ app_name }}'
+  when: rails_env == 'production'
+
+- name: Install bundler
+  command: "/usr/local/rbenv/shims/gem install bundler"
+
+- name: Update bundler
+  command: "/usr/local/rbenv/shims/gem update bundler"
+
+- name: DIRTY FIX add Ruby path to passenger
+  lineinfile:
+    path: /etc/nginx/sites-available/passenger
+    regex: '  passenger_ruby '
+    insertafter: '  passenger_app_env '
+    line: "  passenger_ruby {{ ruby_path }};"
+  notify:
+    - reload nginx

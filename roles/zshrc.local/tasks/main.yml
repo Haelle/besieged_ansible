@@ -1,0 +1,6 @@
+---
+- name: Template .zshrc.local
+  template:
+    src: zshrc.local
+    dest: /etc/zsh/zshrc.local
+    mode: 0644

@@ -1,0 +1,6 @@
+---
+- name: generate certif for domain
+  shell: certbot --nginx --agree-tos --noninteractive --keep-until-expiring --redirect -d {{ cert_domain }} --email {{ cert_email }}
+  become: true
+  notify:
+    - reload nginx

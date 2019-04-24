@@ -1,0 +1,33 @@
+---
+- hosts: cloud-servers
+  remote_user: deploy #root # or whatever
+  become: true
+  vars_files:
+    - secrets/shared.yml
+
+  roles:
+    - role: packages
+
+    - role: singleplatform-eng.users
+      users:
+        - username: deploy
+          name: deploy
+          groups: ['sudo']
+          password: "{{ deploy_password }}"
+          ssh_key:
+            - "{{ deploy_ssh_key }}"
+
+    - role: zzet.rbenv
+      rbenv:
+        env: system
+        version: v1.1.2
+        default_ruby: 2.6.2
+        rubies:
+          - version: 2.6.2
+        rbenv_owner: "{{ custom_rbenv_owner }}"
+        rbenv_group: "{{ custom_rbenv_owner }}"
+
+    - role: viasite-ansible.zsh
+      zsh_user: deploy
+
+    - role: zshrc.local

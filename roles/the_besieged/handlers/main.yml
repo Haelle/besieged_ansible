@@ -1,0 +1,10 @@
+- name: enable sidekiq service
+  systemd:
+    name: sidekiq_{{ app_name }}.service
+    enabled: yes
+    daemon_reload: yes
+
+- name: reload nginx
+  systemd:
+    name: nginx
+    state: reloaded

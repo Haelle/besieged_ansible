@@ -1,0 +1,10 @@
+- src: viasite-ansible.zsh
+  version: v3.2.5
+- src: zzet.rbenv
+  version: 3.4.3
+- src: singleplatform-eng.users
+  version: v1.2.6
+- src: geerlingguy.passenger
+  version: 1.2.0
+- src: geerlingguy.postgresql
+  version: 1.4.5

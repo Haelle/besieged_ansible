@@ -1,0 +1,4 @@
+# Rbenv
+if [ -f "/etc/profile.d/rbenv.sh" ]; then
+  source "/etc/profile.d/rbenv.sh"
+fi
