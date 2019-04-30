@@ -17,7 +17,7 @@
       postgresql_databases:
         - name: the_besieged_production
       postgresql_users:
-        - name: the_besieged
+        - name: the_besieged_production
           password: "{{ db_password }}"
 
     # This role modify the nginx vhost file
