@@ -1,0 +1,37 @@
+- name: delete old nginx link
+  file:
+    path: /etc/nginx/sites-enabled/passenger
+    state: absent
+
+- name: Check wrong nginx conf exists
+  stat:
+    path: /etc/nginx/sites-available/passenger
+  register: passenger_file
+
+- name: rename nginx file conf
+  command: mv /etc/nginx/sites-available/passenger /etc/nginx/sites-available/{{ app_name }}.conf
+  when: passenger_file.stat.exists
+
+- name: create symlink
+  file:
+    src: /etc/nginx/sites-available/{{ app_name }}.conf
+    dest: /etc/nginx/sites-enabled/{{ app_name }}.conf
+    state: link
+
+# a bit of magic here
+# there is 2 "server_name..." and it automatically place it in the right spot
+- name: DIRTY FIX remove default_server
+  lineinfile:
+    path: /etc/nginx/sites-available/{{ app_name }}.conf
+    regex: '  listen 80 default_server;'
+    insertbefore: '  server_name '
+    line: 'listen 80;'
+
+- name: DIRTY FIX add Ruby path to passenger
+  lineinfile:
+    path: /etc/nginx/sites-available/{{ app_name }}.conf
+    regex: '  passenger_ruby '
+    insertafter: '  passenger_app_env '
+    line: "  passenger_ruby {{ ruby_path }};"
+  notify:
+    - reload nginx

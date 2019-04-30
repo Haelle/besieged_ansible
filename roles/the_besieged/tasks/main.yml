@@ -6,6 +6,13 @@
     owner: deploy
     group: deploy
 
+- name: create shared directory
+  file:
+    path: /var/www/{{ app_name }}/shared/config
+    state: directory
+    owner: deploy
+    group: deploy
+
 - name: Add pgcrypto extension to the database (for UUID use)
   postgresql_ext:
     name: pgcrypto
@@ -16,17 +23,22 @@
 - name: Set the master key to decrypt credentials
   template:
     src: master.key.j2
-    dest: '/var/www/{{ app_name }}/shared/config/master.key'
+    dest: /var/www/{{ app_name }}/shared/config/master.key
+
+- name: Set the database.yml file
+  template:
+    src: database.yml.j2
+    dest: /var/www/{{ app_name }}/shared/config/database.yml
 
 - name: Set sidekiq configuration file
   template:
     src: sidekiq.yml.j2
-    dest: '/var/www/{{ app_name }}/shared/config/sidekiq.yml'
+    dest: /var/www/{{ app_name }}/shared/config/sidekiq.yml
 
 - name: Template sidekiq service
   template:
     src: sidekiq.service.j2
-    dest: '/etc/systemd/system/sidekiq_{{ app_name }}.service'
+    dest: /etc/systemd/system/sidekiq_{{ app_name }}.service
     mode: 0644
   notify:
     - enable sidekiq service
@@ -44,11 +56,5 @@
 - name: Update bundler
   command: "/usr/local/rbenv/shims/gem update bundler"
 
-- name: DIRTY FIX add Ruby path to passenger
-  lineinfile:
-    path: /etc/nginx/sites-available/passenger
-    regex: '  passenger_ruby '
-    insertafter: '  passenger_app_env '
-    line: "  passenger_ruby {{ ruby_path }};"
-  notify:
-    - reload nginx
+- name: rename nginx config file
+  include_tasks: nginx.yml
