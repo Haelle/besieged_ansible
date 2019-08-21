@@ -31,5 +31,3 @@
       users:
         - deploy
       tags: zsh
-
-    - role: zshrc.local

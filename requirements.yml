@@ -7,4 +7,4 @@
 - src: geerlingguy.postgresql
   version: 1.4.5
 - src: haelle.oh_my_zsh
-  version: v0.3
+  version: v0.4
