@@ -27,7 +27,9 @@
         rbenv_owner: "{{ custom_rbenv_owner }}"
         rbenv_group: "{{ custom_rbenv_owner }}"
 
-    - role: viasite-ansible.zsh
-      zsh_user: deploy
+    - role : haelle.oh_my_zsh
+      users:
+        - deploy
+      tags: zsh
 
     - role: zshrc.local

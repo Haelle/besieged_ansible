@@ -1,5 +1,3 @@
-- src: viasite-ansible.zsh
-  version: v3.2.5
 - src: zzet.rbenv
   version: 3.4.3
 - src: singleplatform-eng.users
@@ -8,3 +6,5 @@
   version: 1.2.0
 - src: geerlingguy.postgresql
   version: 1.4.5
+- src: haelle.oh_my_zsh
+  version: v0.3
