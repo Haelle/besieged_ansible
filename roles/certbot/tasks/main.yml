@@ -20,4 +20,5 @@
 
 - name: auto-renew certif
   shell: certbot renew --dry-run
+  ignore_errors: yes
   become: true

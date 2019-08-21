@@ -8,27 +8,27 @@
 
   roles:
     - role: geerlingguy.passenger
-      passenger_server_name: sandbox.the-besieged.alxs.fr
-      passenger_app_root: /var/www/the_besieged_sandbox/current/public
+      passenger_server_name: sandbox.besieged.alxs.fr
+      passenger_app_root: /var/www/besieged_sandbox/current/public
       passenger_app_env: sandbox
       passenger_ruby: /usr/local/rbenv/shims/ruby
 
     - role: geerlingguy.postgresql
       postgresql_databases:
-        - name: the_besieged_sandbox
+        - name: besieged_sandbox
       postgresql_users:
-        - name: the_besieged_sandbox
+        - name: besieged_sandbox
           password: "{{ db_password }}"
 
     # This role modify the nginx vhost file
-    - role: the_besieged
-      app_name: the_besieged_sandbox
+    - role: besieged
+      app_name: besieged_sandbox
       rails_env: sandbox
-      db_name: the_besieged_sandbox
+      db_name: besieged_sandbox
       ruby_path: /usr/local/rbenv/shims/ruby
 
     # This role modify the nginx vhost file
     - role: certbot
-      cert_email: "{{ the_besieged_email }}"
+      cert_email: "{{ besieged_email }}"
       cert_domains:
-        - sandbox.the-besieged.alxs.fr
+        - sandbox.besieged.alxs.fr

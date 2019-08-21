@@ -18,6 +18,7 @@
     name: pgcrypto
     db: "{{ db_name }}"
     state: present
+  become: yes
   become_user: postgres
 
 - name: Set the master key to decrypt credentials
