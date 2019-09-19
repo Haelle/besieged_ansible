@@ -2,5 +2,6 @@
 - name: Install mandatory packages
   apt:
     name:
+      - redis
       - powerline
       - fonts-powerline
