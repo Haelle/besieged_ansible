@@ -1,2 +1,2 @@
-[cloud-servers]
+[cloud_servers]
 host-alxs ansible_ssh_host=besieged.alxs.fr

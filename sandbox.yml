@@ -1,5 +1,5 @@
 ---
-- hosts: cloud-servers
+- hosts: cloud_servers
   remote_user: deploy
   become: true
   vars_files:
