@@ -8,3 +8,5 @@
   version: 1.4.5
 - src: haelle.oh_my_zsh
   version: v0.4
+- src: haelle.certbot_ansible
+  version: v1.2

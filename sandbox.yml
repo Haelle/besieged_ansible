@@ -28,7 +28,7 @@
       ruby_path: /usr/local/rbenv/shims/ruby
 
     # This role modify the nginx vhost file
-    - role: certbot
-      cert_email: "{{ besieged_email }}"
-      cert_domains:
+    - role: haelle.certbot_ansible
+      certbot_admin_email: "{{ besieged_email }}"
+      domains_to_cert:
         - sandbox.besieged.alxs.fr
